@@ -1,5 +1,4 @@
 import express from "express";
-import Auth from "./auth/auth.js";
 import Contact from "./contact/contact.js";
 import fs from 'fs'
 
@@ -8,6 +7,7 @@ const PORT = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(getEmail)
 
 app.get('/', (_, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -17,9 +17,12 @@ app.get('/', (_, res) => {
     })  
 })
 
-app.use('/auth', Auth)
-
 app.use('/contact', Contact)
+
+function getEmail(req, _, next) {
+    req.email = req.query.email
+    next()
+}
 
 
 

@@ -1,23 +1,14 @@
-GET https://kodaas-phonebook-backend-7vrrr5wp5cr576-3000.githubpreview.dev/
+GET http://localhost:3000/contact
+    ?email=example@gmail.com
 
+###
 
-Auth:
-    login
-    signup
-    logout
-    forgotpassword
+POST http://localhost:3000/contact HTTP/1.1
+content-type: application/json
 
-Contacts:
-    Get: 
-        all contacts
-        one contacts
-    
-    Post: 
-        one contact
+{
+    "name": "Mark Luke",
+    "number": "09086748574"
+}
 
-    Put:
-        one contact
-
-    Delete:
-        one contact
     
