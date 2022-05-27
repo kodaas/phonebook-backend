@@ -1,9 +1,14 @@
-GET http://localhost:3000/contact
+GET http://localhost:3000/contact/23
     ?email=example@gmail.com
 
 ###
 
-POST http://localhost:3000/contact HTTP/1.1
+GET http://localhost:3000/contact
+     #?email=example@gmail.com
+
+###
+
+POST http://localhost:3000/contact?email=example@gmail.com HTTP/1.1
 content-type: application/json
 
 {

@@ -19,9 +19,14 @@ app.get('/', (_, res) => {
 
 app.use('/contact', Contact)
 
-function getEmail(req, _, next) {
-    req.email = req.query.email
-    next()
+function getEmail(req, res, next) {
+    if (req.query.email) {
+        req.email = req.query.email
+        next()
+    } else {
+        res.status(404).send('Email is Needed')
+    }
+    
 }
 
 
