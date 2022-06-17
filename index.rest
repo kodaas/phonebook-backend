@@ -1,19 +1,25 @@
+
 GET http://localhost:3000/contact/23
-    ?email=example@gmail.com
+    ?email=john@gmail.com
 
 ###
 
 GET http://localhost:3000/contact
-     #?email=example@gmail.com
+    ?email=john@gmail.com
 
 ###
 
-POST http://localhost:3000/contact?email=example@gmail.com HTTP/1.1
+POST http://localhost:3000/contact?email=john@gmail.com HTTP/1.1
 content-type: application/json
 
 {
     "name": "Mark Luke",
     "number": "09086748574"
 }
+
+###
+PATCH http://localhost:3000/contact/23
+    ?email=john@gmail.com
+    &name=Mark Luke
 
     

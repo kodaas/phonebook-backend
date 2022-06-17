@@ -1,4 +1,5 @@
-const contacts = [
+const contacts = {
+  "john@gmail.com": [
     {
       "name": "Maxwell Obi",
       "number": "123",
@@ -39,6 +40,10 @@ const contacts = [
       "number": "123",
       "id": 30
     }
-]
+  ],
+
+  'johne@gmail.com': []
+}
+    
 
 export default contacts;
