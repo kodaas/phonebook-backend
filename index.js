@@ -1,5 +1,5 @@
 import express from "express";
-import Auth from "./auth/auth.js";
+
 import Contact from "./contact/contact.js";
 import fs from 'fs'
 
@@ -16,8 +16,6 @@ app.get('/', (_, res) => {
         res.end();
     })  
 })
-
-app.use('/auth', Auth)
 
 app.use('/contact', Contact)
 
