@@ -1,0 +1,1 @@
+msg: npm run deploy
