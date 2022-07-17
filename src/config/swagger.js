@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 dotenv.config()
 
 const mode = process.env.MODE
-const server = mode === "production" ? [{ url: "", description: "Production Server" }]
+const server = mode === "production" ? [{ url: "https://phone-booke.herokuapp.com", description: "Production Server" }]
     : [{ url: "http://localhost:3000", description: "Local Server" }]
     
     
