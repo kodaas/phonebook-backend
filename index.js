@@ -1,45 +1,42 @@
 import express from "express";
-import Contact from "./contact/contact.js";
-import contacts from "./contact/data.js";
-import fs from 'fs'
+import dotenv from "dotenv";
+import SwaggerUi from "swagger-ui-express";
+import errorhandler from "./src/helpers/errorhandler.js";
 
-const app = express();
-const PORT = 3000;
+import specs from "./src/config/swagger.js"
+import DBConnection from "./src/config/dbconnection.js"
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(getEmail)
-app.use(getContacts)
 
-app.get('/', (_, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    fs.readFile('./index.html', null, (_, data) => {
-        res.write(data);
-        res.end();
-    })  
-})
+dotenv.config()
 
-app.use('/contact', Contact)
+// Routes Import
+import Contact from "./src/routes/contact/contact.js";
 
-function getEmail(req, res, next) {
-    if (req.query.email) {
-        req.email = req.query.email
-        next()
-    } else {
-        res.status(404).send('Email is Needed')
+const PB = express();
+const PORT = process.env.PORT || 3000;
+const URI = process.env.MONGO_URL;
+
+PB.use(express.json());
+PB.use(express.urlencoded({ extended: true }));
+
+const Start = () => {
+    try {
+        DBConnection(URI)
+        PB.listen(PORT, () => console.log("Server is Running"))    
+    } catch (error) {
+        console.log(error)
     }
-    
 }
 
-function getContacts(req, res, next) {
-    let data = contacts[`${req.email}`]
+PB.get("/", (_, res) => { res.status(302).redirect('/doc')})
 
-    if (!data) res.status(404).send("Invalid Email")
+PB.use('/doc', SwaggerUi.serve, SwaggerUi.setup(specs))
 
-    req.contacts = data;
-    next()
-}
+// PB.use('/auth', Auth)
+PB.use('/contact', Contact)
 
+PB.use((_, res) => { res.status(404).json({ message: "Unknown Route" }) })
+PB.use(errorhandler)
 
+Start()
 
-app.listen(PORT, () => console.log(`listening on localhost:${PORT}`))
