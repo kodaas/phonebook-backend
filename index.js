@@ -19,9 +19,9 @@ const URI = process.env.MONGO_URL;
 PB.use(express.json());
 PB.use(express.urlencoded({ extended: true }));
 
-const Start = () => {
+const Start = async () => {
     try {
-        DBConnection(URI)
+        await DBConnection(URI)
         PB.listen(PORT, () => console.log("Server is Running"))    
     } catch (error) {
         console.log(error)

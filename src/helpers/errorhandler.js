@@ -1,4 +1,4 @@
-import { CustomError } from "./error"
+import { CustomError } from "./error.js"
 
 export default function (error, req, res, next) {
 
