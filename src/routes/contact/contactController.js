@@ -8,6 +8,16 @@ export default {
         const contact = await contactModel.find();
         return res.status(200).json({ message: "Success", data: contact})
     }),
+
+    getOne: asyncWrapper(async (req, res, next) => {
+        let { id: contactId } = req.params
+
+        const contact = await contactModel.findById(contactId);
+
+        if (!contact) return next(createCustomErr("Contact not Found", 404))
+        
+        return res.status(200).json({ message: "Success", data: contact})
+    }),
     
     post: asyncWrapper(async (req, res, next) => {
         let reqBody = req.body;

@@ -5,6 +5,8 @@ const contact = express.Router()
 
 contact.get('/', control.get)
 
+contact.get('/:id', control.getOne)
+
 contact.post('/', control.post)
 
 contact.put('/:id', control.update)
