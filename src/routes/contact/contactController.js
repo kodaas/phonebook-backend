@@ -1,11 +1,25 @@
-import contactModel from "../../model/contactModel.js";
-import asyncWrapper from "../../helpers/asyncwrapper.js";
-import { createCustomErr } from "../../helpers/error.js"
+import contactModel from "./contactModel.js";
+import asyncWrapper from "../../middleware/asyncwrapper.js";
+import { createCustomErr } from "../../middleware/error.js"
 
 
 export default {
-    get: asyncWrapper(async (_,res) => {
-        const contact = await contactModel.find();
+    get: asyncWrapper(async (req, res) => {
+        let { sort } = req.query;
+
+        let result = contactModel.find(req.queryObject);
+
+         // Sort
+        if (sort) {
+        	let sortList = sort.split(",").join(" ")
+        	result = result.sort(sortList)
+        }else {
+        	result = result.sort("name")
+        }
+
+        result = result.select("name email phone")
+        
+        const contact = await result
         return res.status(200).json({ message: "Success", data: contact})
     }),
 
@@ -21,7 +35,15 @@ export default {
     
     post: asyncWrapper(async (req, res, next) => {
         let reqBody = req.body;
-        const contact = await contactModel.create(reqBody)
+        let user = req.user
+        let contact = await contactModel.findOne({phone: reqBody.phone})
+
+        if (!contact) contact = await contactModel.create(reqBody)
+
+        
+        user.contacts.push(contact.id)
+        // userControl.update(user)
+        
         contact.save()
         res.status(200).json({ message: "Contact Created", data: contact })
     }),

@@ -1,15 +1,18 @@
 import express from "express";
 import dotenv from "dotenv";
 import SwaggerUi from "swagger-ui-express";
-import errorhandler from "./src/helpers/errorhandler.js";
+import errorhandler from "./src/middleware/errorhandler.js";
 
 import specs from "./src/config/swagger.js"
 import DBConnection from "./src/config/dbconnection.js"
+
+import { routeGuard, canActivate } from "./src/routes/auth/Guard.js"
 
 
 dotenv.config()
 
 // Routes Import
+import Auth from "./src/routes/auth/auth.js";
 import Contact from "./src/routes/contact/contact.js";
 
 const PB = express();
@@ -28,12 +31,12 @@ const Start = async () => {
     }
 }
 
-PB.get("/", (_, res) => { res.status(302).redirect('/doc')})
-
+PB.get("/", (_, res) => { res.status(302).redirect('/doc') })
 PB.use('/doc', SwaggerUi.serve, SwaggerUi.setup(specs))
 
-// PB.use('/auth', Auth)
-PB.use('/contact', Contact)
+PB.use(routeGuard)
+PB.use('/auth', canActivate, Auth)
+PB.use('/contact', canActivate, Contact)
 
 PB.use((_, res) => { res.status(404).json({ message: "Unknown Route" }) })
 PB.use(errorhandler)

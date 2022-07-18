@@ -1,9 +1,10 @@
 import express from "express"
 import control from "./contactController.js"
+import contactQueries from "../../middleware/contactQueries.js"
 
 const contact = express.Router()
 
-contact.get('/', control.get)
+contact.get('/', contactQueries, control.get)
 
 contact.get('/:id', control.getOne)
 
